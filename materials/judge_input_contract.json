@@ -1,0 +1,20 @@
+{
+  "purpose": "fields visible to a judge at adjudication time",
+  "judge_input_fields": [
+    "audit_identity",
+    "candidate_text",
+    "gold_text",
+    "question",
+    "reference_answer"
+  ],
+  "judge_input_excludes": [
+    "canonical_label",
+    "canonical_provenance",
+    "canonical_label_source",
+    "receiving_rerankers",
+    "receiving_model_units",
+    "any other judge label",
+    "disagreement status"
+  ],
+  "judge_input_projection_sha256": "08139a6f33cb3a2c03248acafc3035323dd2230e7f5c356eb6af79092af17da2"
+}

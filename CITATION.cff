@@ -1,0 +1,64 @@
+cff-version: 1.2.0
+message: "If you use this data, code, or these materials, please cite the paper."
+title: "reranker-failure-transitions: data, code, and materials for semantic failure-state transitions across heterogeneous rerankers"
+abstract: >-
+  Data, code, and materials for analyzing semantic failure-state transitions, passage identity, and projection effects across heterogeneous rerankers.
+  Six rerankers of differing paradigms are run over an identical frozen
+  10-candidate pool for 3,719 QASPER queries across two retrieval arms; each
+  rank-1 passage is adjudicated into one of five semantic states, and pairwise
+  state transitions are classified as Resolved, Persistent, Transformed, or
+  Regressed. Includes the frozen candidate pools, reranker outputs, adjudication labels,
+  prompts, model locks, and a single script that reproduces every table.
+version: "1.0.0"
+date-released: "2026-09-09"
+license: MIT
+license-url: "https://github.com/dodary0214/reranker-failure-transitions/blob/main/LICENSE"
+type: dataset
+keywords:
+  - information retrieval
+  - neural reranking
+  - retrieval-augmented generation
+  - failure analysis
+  - scientific document retrieval
+  - QASPER
+authors:
+  - given-names: InA
+    family-names: Kim
+    affiliation: Korea Institute of Science and Technology Information (KISTI)
+  - given-names: Chanuk
+    family-names: Lim
+    affiliation: KISTI
+  - given-names: Sang-Hwan
+    family-names: Gwak
+    affiliation: KISTI
+  - given-names: Ji-Young
+    family-names: Choi
+    affiliation: KISTI
+  - given-names: Kyong-Ha
+    family-names: Lee
+    affiliation: KISTI
+  - given-names: Gunwoo
+    family-names: Lee
+    affiliation: KISTI
+    email: gwlee@kisti.re.kr
+repository-code: "https://github.com/dodary0214/reranker-failure-transitions"
+url: "https://github.com/dodary0214/reranker-failure-transitions/releases/tag/v1.0.0"
+references:
+  - type: data
+    title: "QASPER: A Dataset of Information-Seeking Questions and Answers Anchored in Research Papers"
+    year: 2021
+    authors:
+      - given-names: Pradeep
+        family-names: Dasigi
+      - given-names: Kyle
+        family-names: Lo
+      - given-names: Iz
+        family-names: Beltagy
+      - given-names: Arman
+        family-names: Cohan
+      - given-names: "Noah A."
+        family-names: Smith
+      - given-names: Matt
+        family-names: Gardner
+    collection-title: "Proceedings of NAACL-HLT 2021"
+    url: "https://allenai.org/data/qasper"

@@ -1,0 +1,70 @@
+note: Input template, inference mode, decoding, and ranking derivation for each of the six rerankers (paper §3.2).
+  Weights are fetched from HuggingFace at the pinned revision; see models.json.
+rerankers:
+- model_key: minilm_l6
+  model_id: cross-encoder/ms-marco-MiniLM-L6-v2
+  revision: 233902d25c440f23af6f7d6e94d2946bac0bee0a
+  dtype: float32
+  max_context: 512
+  prompt_or_template: none — raw (query, passage) pair via tokenizer(text=q, text_pair=d)
+  ranking_derivation: sort by logit desc; ties broken by frozen pre-rerank RRF order
+  paradigm: pointwise
+- model_key: bge_v2_m3
+  model_id: BAAI/bge-reranker-v2-m3
+  revision: 953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e
+  dtype: float32
+  max_context: 8192
+  prompt_or_template: none — raw (query, passage) pair
+  ranking_derivation: sort by logit desc; ties broken by frozen pre-rerank RRF order
+  paradigm: pointwise
+- model_key: gemma
+  model_id: BAAI/bge-reranker-v2-gemma
+  revision: 1787044f8b6fb740a9de4557c3a12377f84d9e17
+  dtype: bfloat16
+  max_context: 8192
+  prompt_or_template: '"A: {query}\nB: {passage}" wrapped by the model card''s yes-logit prompt.'
+  ranking_derivation: sort by yes-logit desc; ties broken by frozen pre-rerank RRF order
+  paradigm: pointwise
+- model_key: qwen3_rr_4b
+  model_id: Qwen/Qwen3-Reranker-4B
+  revision: 22e683669bc0f0bd69640a1354a6d0aebcfeede5
+  dtype: bfloat16
+  max_context: 32768
+  prompt_or_template: official Qwen3-Reranker model-card recipe (system instruction + '<Instruct>: ... <Query>: ... <Document>: ...'; score = softmax over yes/no logits)
+  ranking_derivation: sort by P(yes) desc; ties broken by frozen pre-rerank RRF order
+  paradigm: pointwise
+- model_key: first
+  model_id: rryisthebest/First_Model
+  revision: 64eba9b83c174439d2b6f5d333fbb822b38d73a7
+  dtype: bfloat16
+  max_context: 32768
+  prompt_or_template: 'Reference create_prompt (rerank_type=''text''): _add_prefix_prompt(use_alpha) + "[A..J] {content}"
+    lines + _add_post_prompt(use_alpha). Single user turn; the reference driver sets no system message.'
+  inference_mode: Official single-token decoding. One forward pass; take the logits at the first generated position;
+    keep tokens decoding to a valid identifier; argsort descending. The ordering IS the ranking — no permutation
+    string is generated, so omission, duplication, and hallucinated identifiers are structurally impossible. No
+    sampling, hence deterministic by construction.
+  ranking_derivation: argsort of identifier logits, descending
+  decoding:
+    do_sample: false
+    sampling: none
+    forward_passes_per_query: 1
+  window_policy: single window of exactly 10; no sliding, no stride
+  paradigm: listwise
+- model_key: reasonrank
+  model_id: liuwenhan/ReasonRank-7B
+  revision: 3444046f1481991fd9f2021df231e6c9cb7fcef1
+  dtype: bfloat16
+  max_context: 32768
+  prompt_or_template: 'Official repo prompt, verbatim. system = listwise_prompt_r1.toml :: system_prompt_reasoning;
+    user = utils.add_prefix_prompt(RANK_GPT_reasoning) + "[i] {content}" lines + utils.add_post_prompt(RANK_GPT_reasoning).
+    Single user message (not multi-turn). The post-prompt carries an explicit completeness instruction: "All the
+    passages should be included".'
+  ranking_derivation: parsed permutation is the ranking; no scalar score emitted
+  decoding:
+    do_sample: false
+    temperature: 0.0
+    num_beams: 1
+    max_new_tokens: 4096
+  window_policy: single window of exactly 10; no sliding, no stride
+  paradigm: reasoning
