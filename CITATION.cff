@@ -42,7 +42,7 @@ authors:
     affiliation: KISTI
     email: gwlee@kisti.re.kr
 repository-code: "https://github.com/dodary0214/reranker-failure-transitions"
-url: "https://github.com/dodary0214/reranker-failure-transitions/releases/tag/v1.0.0"
+url: "https://github.com/dodary0214/reranker-failure-transitions/releases/tag/v1.1.0"
 references:
   - type: data
     title: "QASPER: A Dataset of Information-Seeking Questions and Answers Anchored in Research Papers"

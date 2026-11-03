@@ -11,7 +11,7 @@ directional state transitions, passage identity, and what coarser evaluation vie
 ```
 data/        frozen candidate pools, reranker outputs, adjudication labels   (§3.1–3.4)
 materials/   adjudication prompts, judge/reranker configurations, model locks (§3.2, §3.4)
-figures/     Figures 1–5 as they appear in the paper
+figures/     Figures 1–5 of the submitted version (v1.0.0); revised numbering is under revision/figures/ (fig4 = former fig5, figS1 = former fig4)
 reproduce.py recomputes every table and reported statistic from data/     (§4–6)
 revision/    everything added for the revised version (SI S3–S9); same layout as the root
              python revision/reproduce_si.py reproduces every SI table

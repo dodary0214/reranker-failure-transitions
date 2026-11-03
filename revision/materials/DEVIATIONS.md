@@ -1,5 +1,7 @@
 # Deviations from REVISION_PREREG.md
 
+> File paths in this log refer to the study repository, not to this release; the released counterparts are listed in `../data/README.md`.
+
 Each entry is written **before** the affected result is computed, unless marked post hoc.
 
 ## DEV-01 — Exp E: top-10 re-run control on the revision hardware (addition)
@@ -208,7 +210,7 @@ Prereg §5 D/G specify blind single-expert labels with model labels hidden. What
   94.3 % ≥ 90 %, ambiguous 0.28 % ≤ 5 %, audit 30/30 ≥ 28/30. Recorded in `q0_mapping_quality_report.json` `gate`.
 
 ## DEV-13 — Exp H GPU scheduling (operational, logged 2026-11-02 before any QASA reranker output)
-At launch, GPU 1 was fully occupied by another user's vLLM processes (≈ 139 GB, user `shade`). Those processes were not
+At launch, GPU 1 was fully occupied by another user's vLLM processes (≈ 139 GB). Those processes were not
 touched. Changes:
 - BGE-M3 embedding (runbook step 2a) ran on GPU 0 instead of GPU 1.
 - Reranking uses `exp_h_qasa/scripts/chain_qasa_rerank_flex.sh` instead of `chain_qasa_rerank.sh`. Runs, shards,
