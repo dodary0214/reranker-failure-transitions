@@ -9,8 +9,8 @@ abstract: >-
   state transitions are classified as Resolved, Persistent, Transformed, or
   Regressed. Includes the frozen candidate pools, reranker outputs, adjudication labels,
   prompts, model locks, and a single script that reproduces every table.
-version: "1.0.0"
-date-released: "2026-09-09"
+version: "1.1.0"
+date-released: "2026-11-03"
 license: MIT
 license-url: "https://github.com/dodary0214/reranker-failure-transitions/blob/main/LICENSE"
 type: dataset

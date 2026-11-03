@@ -13,6 +13,8 @@ data/        frozen candidate pools, reranker outputs, adjudication labels   (§
 materials/   adjudication prompts, judge/reranker configurations, model locks (§3.2, §3.4)
 figures/     Figures 1–5 as they appear in the paper
 reproduce.py recomputes every table and reported statistic from data/     (§4–6)
+revision/    everything added for the revised version (SI S3–S9); same layout as the root
+             python revision/reproduce_si.py reproduces every SI table
 ```
 
 ## Reproduce

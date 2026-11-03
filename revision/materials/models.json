@@ -1,0 +1,101 @@
+{
+  "note": "Models added in the revision. The six rerankers are those of ../../materials/models.json; weights are not redistributed; fetch each checkpoint at the pinned revision.",
+  "models": [
+    {
+      "role": "semantic sensitivity judge",
+      "huggingface_model_id": "mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+      "revision_sha": "95a6d26c4bfb886c58daf9d3f7332c857cb27b43",
+      "serving": "vLLM, 1 GPU, no quantization",
+      "decoding": {
+        "temperature": 0,
+        "max_tokens": 250,
+        "response_format": "json_object"
+      }
+    },
+    {
+      "role": "retrieval embedding (reconstructed retrieval run)",
+      "huggingface_model_id": "BAAI/bge-m3",
+      "revision_sha": "5617a9f61b028005a4858fdac845db406aefb181",
+      "serving": "vLLM pooling, float16, normalized"
+    },
+    {
+      "role": "downstream generator",
+      "huggingface_model_id": "meta-llama/Llama-3.3-70B-Instruct",
+      "revision_sha": "6f6073b423013f6a7d4d9f39144961bfbfbc386b",
+      "serving": "vLLM, tensor parallel 2, no quantization",
+      "decoding": {
+        "temperature": 0.0,
+        "max_tokens": 256
+      }
+    },
+    {
+      "role": "primary downstream evaluator",
+      "huggingface_model_id": "Qwen/Qwen3.5-27B",
+      "revision_sha": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+      "serving": "vLLM, 1 GPU, thinking disabled",
+      "decoding": {
+        "temperature": 0.0,
+        "max_tokens": 512,
+        "response_format": {
+          "type": "json_object"
+        },
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      }
+    },
+    {
+      "role": "secondary downstream evaluator (evaluator sensitivity)",
+      "huggingface_model_id": "google/gemma-3-27b-it",
+      "revision_sha": "005ad3404e59d6023443cb575daa05336842228a",
+      "serving": "vLLM, 1 GPU",
+      "decoding": {
+        "temperature": 0.0,
+        "max_tokens": 512,
+        "response_format": {
+          "type": "json_object"
+        }
+      }
+    }
+  ],
+  "runtime_environment": {
+    "gpu": "NVIDIA H200 NVL",
+    "driver": "580.178.04",
+    "envs": {
+      "vllm: Mistral judge, Qwen judge, Llama generator, BGE-M3 embedding": {
+        "vllm": "0.28.0",
+        "torch": "2.13.0",
+        "transformers": "5.16.1",
+        "tokenizers": "0.23.3",
+        "mistral-common": "1.13.0",
+        "openai": "3.41.0",
+        "xgrammar": "0.2.8",
+        "flashinfer-python": "0.6.16.post3"
+      },
+      "rerank: six locked rerankers": {
+        "torch": "2.6.0+cu124",
+        "transformers": "5.16.1",
+        "tokenizers": "0.23.1",
+        "accelerate": "1.14.0",
+        "safetensors": "0.8.0",
+        "sentencepiece": "0.2.2",
+        "numpy": "2.5.2",
+        "scipy": "1.18.1",
+        "pandas": "3.0.5",
+        "pyarrow": "25.0.1"
+      },
+      "milvus: retrieval reconstruction": {
+        "pymilvus": "2.6.17",
+        "langchain-milvus": "0.3.3",
+        "langchain-core": "1.7.1",
+        "numpy": "2.5.2",
+        "requests": "2.34.2"
+      },
+      "revision: QASA Q0, downloads": {
+        "beautifulsoup4": "4.12.3",
+        "huggingface-hub": "2.3.0"
+      }
+    },
+    "note": "The BGE-M3 embedding for Exp E ran with transformers 5.21.1 in the vllm env (DEV-05); the env was then pinned to 5.16.1 (DEV-08) before any judge or generator run."
+  }
+}
