@@ -23,8 +23,9 @@ Lexical trap. `state_5 = null` marks a missing label (an invalid judge output). 
 | `qasa.jsonl` | 41,726 | `kind=arxiv_version` (109 papers: version, html sha256), `cohort` (1,554 questions with exclusion reason), `mapping` (2,812 evidence-to-paragraph mappings with scores), `mapping_review` (30 reviewed mappings and verdicts), `query` (1,390 eligible questions with reference answers and evidence), `pool` (top-20 pools), `ranking` (top-10 and top-20 reranker outputs, field `depth`), `label` (Mistral labels of selected non-gold identities) | S7 |
 | `downstream.jsonl` | 3 × 14,272 | downstream unit (dataset, query, arm, selected passage): `kind=answer` (Llama-3.3-70B-Instruct answer), `kind=judgment_qwen` (primary evaluator), `kind=judgment_gemma` (secondary evaluator) | S8 |
 
-`reproduce_si.py` reproduces Tables S4–S23 and the data behind Figures S1–S2. The 81.5% HNSW diagnostic in SI
-Section S5.1 requires the original channel-level retrieval lists, which are not included.
+`reproduce_si.py` reproduces Supplementary Tables S4–S23 and the data behind Figures S1–S2 (Tables S1–S3 are
+model, environment and rubric listings). The 81.5% HNSW diagnostic in Supplementary Section S5.1 requires the
+original channel-level retrieval lists, which are not included.
 
 Join keys:
 - `query_id` + `arm` + `passage_id` for labels;
