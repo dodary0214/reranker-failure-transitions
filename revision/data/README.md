@@ -25,7 +25,7 @@ Lexical trap. `state_5 = null` marks a missing label (an invalid judge output). 
 
 `reproduce_si.py` reproduces Supplementary Tables S4–S23 and the data behind Figures S1–S2 (Tables S1–S3 are
 model, environment and rubric listings). The 81.5% HNSW diagnostic in Supplementary Section S5.1 requires the
-original channel-level retrieval lists, which are not included.
+regenerated BGE-M3 vectors and the Milvus index of the reconstructed run, which are not included.
 
 Join keys:
 - `query_id` + `arm` + `passage_id` for labels;

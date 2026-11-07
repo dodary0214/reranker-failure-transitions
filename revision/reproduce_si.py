@@ -393,23 +393,29 @@ def si_complete_pool(I, V, B, R):
                 for m in MODELS}
         # pool-based independence reference: for a pool with h harmful candidates of which l are Lexical
         # traps, two distinct uniform draws differ in subtype with probability 2l(h-l)/(h(h-1)).
-        comp = {}
+        # (DEV-16, post hoc). The prespecified references (analysis plan, Exp C) use 2p(1-p) with p the Lexical-trap
+        # share of harmful pool candidates, pooled per arm or per query (event-weighted); they are reported alongside.
+        comp, lh = {}, {}
         for q in qids:
             p = I["pools"][(arm, q)]; gold = set(p["gold_ids_in_pool"])
             st = [I["mistral"].get((arm, q, c)) for c in p["candidate_passage_ids"] if c not in gold]
             h = sum(x in "XL" for x in st if x); l = sum(x == "L" for x in st if x)
             comp[q] = 2 * l * (h - l) / (h * (h - 1)) if h >= 2 else None
-        alt = trans = 0; ref_sum = 0.0; pairs_below = 0
+            lh[q] = (l, h)
+        alt = trans = 0; ref_sum = 0.0; pairs_below = 0; qc_sum = 0.0; qc_n = 0
         for a, b in itertools.permutations(MODELS, 2):
             o = t = 0; r = 0.0
             for q in qids:
                 d = per_q[q]
                 if a in d and b in d:
                     (ca, sa), (cb, sb) = d[a], d[b]
-                    if sa in "XL" and sb in "XL" and ca != cb and comp[q] is not None:
-                        o += 1; t += sa != sb; r += comp[q]
+                    if sa in "XL" and sb in "XL" and ca != cb:
+                        l, h = lh[q]; qc_sum += 2 * (l / h) * (1 - l / h); qc_n += 1
+                        if comp[q] is not None:
+                            o += 1; t += sa != sb; r += comp[q]
             alt += o - t; trans += t; ref_sum += r
             pairs_below += (t / o) < (r / o)
+        ps = pooled["L"] / (pooled["L"] + pooled["X"])
         out[arm] = {"pools": len(I["comparable"][arm]), "candidates_labelled": sum(pooled.values()),
                     "candidates_missing_label": missing,
                     "random_candidate_harmful_probability": pct(rand["X"] + rand["L"]),
@@ -418,6 +424,8 @@ def si_complete_pool(I, V, B, R):
                     "harmful_candidates": pooled["L"] + pooled["X"],
                     "observed_pooled_conditional_switch": f"{trans}/{alt + trans} ({100 * trans / (alt + trans):.2f}%)",
                     "pool_based_independence_reference": pct(ref_sum / (alt + trans)),
+                    "prespecified_pooled_reference": pct(2 * ps * (1 - ps)),
+                    "prespecified_query_conditioned_reference": pct(qc_sum / qc_n),
                     "ordered_pairs_observed_below_reference": f"{pairs_below}/30"}
     R["S13_complete_pool"] = out
 

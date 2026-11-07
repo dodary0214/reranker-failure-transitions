@@ -14,7 +14,7 @@ materials/   adjudication prompts, judge/reranker configurations, model locks (�
 figures/     Figures 1–5 of the submitted version (v1.0.0); revised numbering is under revision/figures/
              (fig4 = former fig5, figS1 = former fig4, fig5 new)
 reproduce.py recomputes every table and reported statistic from data/     (§4–6)
-revision/    everything added for the revised version (SI S3–S9); same layout as the root
+revision/    everything added for the revised version (SI S2–S10); same layout as the root
              python revision/reproduce_si.py reproduces Supplementary Tables S4–S23
 ```
 

@@ -47,8 +47,10 @@ Each entry is written **before** the affected result is computed, unless marked 
   regenerated top-20 list, by construction) for every query-arm that is gold-containing at regenerated top-10.
   Compare regenerated top-10 vs top-20 on the query-arms gold-containing at both, in the Mistral view, with the E
   metrics. Both depths then share retrieval run and hardware; only pool depth differs.
-- **Status in the paper:** depth sensitivity (Layer B), reported beside the preregistered E1 (exploratory) and E2.
-  It replaces neither, and the submitted top-10 results stay primary.
+- **Status in the paper:** depth sensitivity (Layer B). After the reconstruction gate failed, the paper reports this
+  nested comparison (SI S5.2, Table S14) and does not report E1 or E2; E1 was demoted to exploratory by the gate,
+  and the nested comparison isolates pool depth more cleanly than E2. The submitted top-10 results stay primary.
+  (Status updated 2026-11-07 to match the reported analyses.)
 
 ## Reconstruction gate outcome (recorded, not a deviation)
 
@@ -203,7 +205,8 @@ Prereg §5 D/G specify blind single-expert labels with model labels hidden. What
   population-level accuracy estimates.
 - **Interpretation:** the labels are effectively a fourth judge family (Anthropic) with expert sign-off. Claude is not
   the family of GPT-4o, GPT-5 or Mistral, so the comparison stays cross-family.
-- **Sensitivity:** agreement is also reported with the unreviewed Claude proposals as the reference.
+- **Sensitivity:** agreement with the unreviewed Claude proposals as the reference was planned but is not reported;
+  the paper uses only the author-reviewed labels as the reference (status updated 2026-11-07).
 - **Mapping audit:** 30/30 CORRECT, including M21, a version-revised sentence. The GO decision does not depend on M21
   (29/30 ≥ 28).
 - **GO_QASA:** approved by the author on 2026-11-02 on all three preregistered gates: mapped-gold query coverage
@@ -287,3 +290,18 @@ touched. Changes:
   - **Release field name:** `first_author_second_pass` in `revision/data/reference_sample_120.jsonl` of the public
     release.
   - **κ:** the exact κ over the 82 items is 0.5148, i.e. 0.51 at two decimals.
+
+## DEV-16 — Exp C: without-replacement candidate-pool reference for subtype switching (addition, post hoc; code added 2026-11-04, logged 2026-11-07)
+
+- **What:** for each pair–query event in which two rerankers select different harmful passages, a pool with h
+  harmful candidates of which l are Lexical traps gives the probability 2l(h−l)/[h(h−1)] that two distinct uniform
+  draws differ in subtype; the reference is the mean over the events that define the observed pooled conditional
+  subtype switch (Mistral view; pools with h < 2 excluded).
+- **Why:** the two selections are necessarily distinct passages, whereas the prespecified 2p(1−p) references
+  (pooled per arm; query-conditioned, event-weighted) treat the draws as independent with replacement.
+- **Status:** added after the complete-pool labels were obtained. Reported in SI Table S13 together with the
+  prespecified references: pooled 49.77 % / 49.88 %, query-conditioned 28.25 % / 30.53 %, without replacement
+  32.47 % / 35.24 % (Cross / Within). The observed rate (16.29 % / 27.58 %) is below all three, so the conclusion does
+  not depend on the choice of reference.
+- **Code:** `revision/reproduce_si.py`, `si_complete_pool` (`S13_complete_pool` keys
+  `pool_based_independence_reference`, `prespecified_pooled_reference`, `prespecified_query_conditioned_reference`).
