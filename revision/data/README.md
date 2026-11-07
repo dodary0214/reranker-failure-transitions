@@ -1,6 +1,6 @@
 # Revision data
 
-All files are JSON Lines. They add to `../../data/` (the submitted release, unchanged); `revision/reproduce_si.py`
+All files are JSON Lines. They add to `../../data/` (the submitted release; data files unchanged, README section references updated for the revision); `revision/reproduce_si.py`
 reads both. Files that mix several record types carry a `kind` field.
 
 **Text policy.**

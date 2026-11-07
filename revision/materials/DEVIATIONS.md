@@ -17,6 +17,8 @@ Each entry is written **before** the affected result is computed, unless marked 
 - **Use:** E1 as preregistered (frozen top-10 vs new top-20) is reported unchanged. As a sensitivity analysis,
   E1 is also reported with the H200 top-10 re-run as the baseline, so that both depths share hardware. The
   re-run never replaces the frozen top-10 results (§1.1 of the plan).
+- **Status (updated 2026-11-07):** after the reconstruction gate failed, E1 and E2 are not reported in the paper;
+  depth sensitivity is reported only through the nested comparison of DEV-06.
 
 ## DEV-02 to DEV-05 — Exp E retrieval reconstruction: environment substitutions
 
@@ -197,8 +199,8 @@ Prereg §5 D/G specify blind single-expert labels with model labels hidden. What
 - **Files:** both workbooks are kept outside git (`$RUN/human_labels_ai_assisted/`; sha256 final `bfd66a81…`,
   proposals `76dfc034…`). Imported by `exp_d_human/scripts/import_labels.py`.
 - **Author decision (2026-11-02):** use these labels (option a).
-- **Wording in the paper:** "AI-assisted, author-expert-reviewed labels" (Claude Fable 5.1 pre-annotations; all items
-  reviewed; 5/120 changed). Never "independent" or "blinded human annotation".
+- **Wording in the paper:** "AI-proposed, author-reviewed reference labels" (Claude Fable 5.1 pre-annotations; all items
+  reviewed; 5/120 changed). Never "independent" or "blinded human annotation". (Wording updated 2026-11-07.)
 - **Roles:** Exp B provides cross-family model robustness; Exp D provides expert review of model-assisted
   pre-annotations.
 - **Scope of the numbers:** Exp D agreement statistics are results on the GPT-4o-stratified validation sample, not

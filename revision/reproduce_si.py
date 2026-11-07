@@ -402,20 +402,25 @@ def si_complete_pool(I, V, B, R):
             h = sum(x in "XL" for x in st if x); l = sum(x == "L" for x in st if x)
             comp[q] = 2 * l * (h - l) / (h * (h - 1)) if h >= 2 else None
             lh[q] = (l, h)
-        alt = trans = 0; ref_sum = 0.0; pairs_below = 0; qc_sum = 0.0; qc_n = 0
+        ps = pooled["L"] / (pooled["L"] + pooled["X"]); ref_pooled = 2 * ps * (1 - ps)
+        alt = trans = 0; ref_sum = 0.0; qc_sum = 0.0; qc_n = 0
+        below = {"pooled": 0, "query_conditioned": 0, "without_replacement": 0}
         for a, b in itertools.permutations(MODELS, 2):
-            o = t = 0; r = 0.0
+            o = t = 0; r = 0.0; o2 = t2 = 0; r2 = 0.0
             for q in qids:
                 d = per_q[q]
                 if a in d and b in d:
                     (ca, sa), (cb, sb) = d[a], d[b]
                     if sa in "XL" and sb in "XL" and ca != cb:
-                        l, h = lh[q]; qc_sum += 2 * (l / h) * (1 - l / h); qc_n += 1
+                        l, h = lh[q]; w = 2 * (l / h) * (1 - l / h)
+                        qc_sum += w; qc_n += 1; o2 += 1; t2 += sa != sb; r2 += w
                         if comp[q] is not None:
                             o += 1; t += sa != sb; r += comp[q]
             alt += o - t; trans += t; ref_sum += r
-            pairs_below += (t / o) < (r / o)
-        ps = pooled["L"] / (pooled["L"] + pooled["X"])
+            below["without_replacement"] += (t / o) < (r / o)
+            below["query_conditioned"] += (t2 / o2) < (r2 / o2)
+            below["pooled"] += (t2 / o2) < ref_pooled
+        pairs_below = below["without_replacement"]
         out[arm] = {"pools": len(I["comparable"][arm]), "candidates_labelled": sum(pooled.values()),
                     "candidates_missing_label": missing,
                     "random_candidate_harmful_probability": pct(rand["X"] + rand["L"]),
@@ -424,8 +429,9 @@ def si_complete_pool(I, V, B, R):
                     "harmful_candidates": pooled["L"] + pooled["X"],
                     "observed_pooled_conditional_switch": f"{trans}/{alt + trans} ({100 * trans / (alt + trans):.2f}%)",
                     "pool_based_independence_reference": pct(ref_sum / (alt + trans)),
-                    "prespecified_pooled_reference": pct(2 * ps * (1 - ps)),
+                    "prespecified_pooled_reference": pct(ref_pooled),
                     "prespecified_query_conditioned_reference": pct(qc_sum / qc_n),
+                    "ordered_pairs_observed_below_each_reference": {k: f"{v}/30" for k, v in below.items()},
                     "ordered_pairs_observed_below_reference": f"{pairs_below}/30"}
     R["S13_complete_pool"] = out
 

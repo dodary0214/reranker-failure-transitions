@@ -57,7 +57,7 @@ within 0.5 percentage points; exact bounds depend on the random-number stream of
 * Cross and Within share 798 comparable queries and are analyzed separately, never pooled.
 * Pair-level medians over the 30 ordered pairs per arm use the upper median (16th sorted value; §3.6).
 * The GPT-5 re-adjudication is a sensitivity analysis: it never overwrites canonical labels and no
-  majority vote is formed (§3.4, §6.3).
+  majority vote is formed (submitted §3.4, §6.3; revised §6.2 and SI S3.3).
 
 ## License and citation
 
